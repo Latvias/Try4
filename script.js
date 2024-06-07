@@ -109,3 +109,9 @@ function showError() {
         document.body.removeChild(errorModal);
     }, 10000);
 }
+
+.error-modal img {
+    width: 50px;
+    height: 50px;
+}
+
