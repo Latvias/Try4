@@ -41,7 +41,7 @@ function sendMessage() {
             showError();
         } else {
             setTimeout(() => {
-                addMessage('bot', responses[messageCount % responses.length]);
+                typeMessage('bot', responses[messageCount % responses.length]);
                 messageCount++;
             }, 1000);
         }
@@ -55,7 +55,7 @@ function addMessage(sender, text, isImage = false, imageSrc = '') {
     if (isImage) {
         const img = document.createElement('img');
         img.src = imageSrc;
-        img.style.maxWidth = '100%';
+        img.style.maxWidth = '100px';
         message.appendChild(img);
     } else {
         message.textContent = text;
@@ -79,14 +79,14 @@ function stopRecording() {
 
     addMessage('user', '', true, response.img);
     setTimeout(() => {
-        addMessage('bot', response.text);
+        typeMessage('bot', response.text);
     }, 1000);
 }
 
 function attachFile() {
     addMessage('user', '', true, 'images/doc.png');
     setTimeout(() => {
-        addMessage('bot', 'Вот ваш документ');
+        typeMessage('bot', 'Вот ваш документ');
         addMessage('bot', '', true, 'images/returndoc.png');
     }, 10000);
 }
@@ -107,7 +107,25 @@ function showError() {
     document.body.appendChild(errorModal);
     setTimeout(() => {
         document.body.removeChild(errorModal);
-    }, 10000);
+    }, 3000);
+}
+
+function typeMessage(sender, text) {
+    const messages = document.getElementById('messages');
+    const message = document.createElement('div');
+    message.classList.add('message', sender);
+    messages.appendChild(message);
+    messages.scrollTop = messages.scrollHeight;
+
+    let i = 0;
+    function type() {
+        if (i < text.length) {
+            message.textContent += text.charAt(i);
+            i++;
+            setTimeout(type, 100);
+        }
+    }
+    type();
 }
 
 .error-modal img {
